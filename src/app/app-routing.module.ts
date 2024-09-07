@@ -5,17 +5,15 @@ import { AboutUsComponent } from './about-us/about-us.component';
 import { MenuComponent } from './menu/menu.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { ReservationComponent } from './reservation/reservation.component';
-import { LoginComponent } from './admin/login/login.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' }, 
   { path: 'home', component: HomeComponent }, 
-  { path: 'menu', component: MenuComponent },
+  { path: 'menu', component: MenuComponent }, 
+  { path: 'reservation', component: ReservationComponent},
   { path: 'about-us', component: AboutUsComponent }, 
-  { path: 'contact-us', component: ContactUsComponent },
-  { path: 'reservation', component: ReservationComponent },
-  { path: 'admin/admin-login', component: LoginComponent },
-  { path: 'admin', redirectTo: 'admin/admin-login', pathMatch: 'full' }
+  { path: 'contact-us', component: ContactUsComponent }
+  
 ];
 
 @NgModule({

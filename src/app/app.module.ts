@@ -8,9 +8,8 @@ import { MenuComponent } from './menu/menu.component';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { LoginComponent } from './admin/login/login.component';
-import { ManageComponent } from './admin/manage/manage.component';
 import { ReservationComponent } from './reservation/reservation.component';
+
 
 @NgModule({
   declarations: [
@@ -19,9 +18,8 @@ import { ReservationComponent } from './reservation/reservation.component';
     MenuComponent,
     AboutUsComponent,
     ContactUsComponent,
-    LoginComponent,
-    ManageComponent,
-    ReservationComponent
+    ReservationComponent,
+ 
   ],
   imports: [
     BrowserModule,

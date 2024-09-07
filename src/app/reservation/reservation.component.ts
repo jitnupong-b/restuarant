@@ -1,17 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import Swal from 'sweetalert2';
-
+import { Component } from '@angular/core';
+import { FormGroup,FormBuilder, Validators } from '@angular/forms';
 @Component({
   selector: 'app-reservation',
   templateUrl: './reservation.component.html',
-  styleUrl: './reservation.component.css',
+  styleUrl: './reservation.component.css'
 })
-export class ReservationComponent implements OnInit {
+export class ReservationComponent {
   reservationForm!: FormGroup;
-
+ 
   constructor(private fb: FormBuilder) {}
-
+ 
   ngOnInit(): void {
     this.reservationForm = this.fb.group({
       name: ['', Validators.required],
@@ -23,20 +21,13 @@ export class ReservationComponent implements OnInit {
       specialRequests: [''],
     });
   }
-
+ 
   onSubmit() {
     if (this.reservationForm.valid) {
       console.log(this.reservationForm.value);
-      alert("จองแหล่ว");
-
-      Swal.fire({
-        icon: "success",
-        title: "Oops...",
-        text: "Something went wrong!",
-        footer: '<a href="#">Why do I have this issue?</a>'
-      });
+      
     } else {
-
+ 
       Object.keys(this.reservationForm.controls).forEach((key) => {
         const control = this.reservationForm.get(key);
         if (control) {
