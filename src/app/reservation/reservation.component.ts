@@ -1,17 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-reservation',
   templateUrl: './reservation.component.html',
-  styleUrl: './reservation.component.css'
+  styleUrl: './reservation.component.css',
 })
-export class ReservationComponent {
-reservationForm!: FormGroup;
- 
+export class ReservationComponent implements OnInit {
+  reservationForm!: FormGroup;
+
   constructor(private fb: FormBuilder) {}
- 
+
   ngOnInit(): void {
     this.reservationForm = this.fb.group({
       name: ['', Validators.required],
@@ -23,18 +22,13 @@ reservationForm!: FormGroup;
       specialRequests: [''],
     });
   }
+
   onSubmit() {
     if (this.reservationForm.valid) {
       console.log(this.reservationForm.value);
-      Swal.fire({
-        position: "center",
-        icon: "success",
-        title: "จองแล้วจ้า",
-        showConfirmButton: false,
-        timer: 1500
-      });
+      // Here you would typically send the form data to a server
     } else {
- 
+      // Mark all fields as touched to trigger validation messages
       Object.keys(this.reservationForm.controls).forEach((key) => {
         const control = this.reservationForm.get(key);
         if (control) {
