@@ -1,0 +1,43 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing : border-box;
+}
+
+nav{
+    background-color: rgb(0, 0, 0);
+    height: 60px;
+}
+
+.container{
+
+    max-width: 1140px;
+    margin:  0 auto;
+    display: flex;
+    
+    
+}
+.nav-item{
+    display: flex;
+    margin-left: 13rem;
+    margin-top: 20px;
+}   
+
+.nav-link{
+    margin-left: 5rem;
+    color: aliceblue;
+    text-decoration: none;
+}
+
+
+.fontcolor{
+    color: aliceblue;
+
+}
+
+.navbar-brand{
+    color: aliceblue;
+    margin-top: 15px;
+    font-size: 1.5rem;
+   
+}

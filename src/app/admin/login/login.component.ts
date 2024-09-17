@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UsersService } from '../../services/users.service';
@@ -57,4 +58,15 @@ export class LoginComponent implements OnInit {
       });
     }
   }
+=======
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrl: './login.component.css'
+})
+export class LoginComponent {
+
+>>>>>>> 4a06c7c3fbcafd7ab138a03f1135b751d22df535
 }
