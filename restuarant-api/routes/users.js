@@ -1,7 +1,7 @@
 var express = require("express");
 var router = express.Router();
 var config = require("../config/dbconfig");
-const sql = require("mssql");
+const sql = require("mssql"); 
 
 /* GET users listing. */
 router.get("/", async function (req, res, next) {
