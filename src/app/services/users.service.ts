@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -9,15 +9,23 @@ import { tap } from 'rxjs/operators';
 export class UsersService {
   private url = 'http://localhost:3000/users';
 
+  private httpOptions = {
+    headers: new HttpHeaders(
+      {
+        'Content-Type': 'application/json',
+        Authorization: 'Basic ' + btoa('admin:adminadmin;'),
+      }
+    )
+  };
+
   constructor(private http: HttpClient) {}
 
   getUsers(username: string, password: string): Observable<string> {
-    
     return this.http
       .post(
         `${this.url}/login-fixed`,
         { username: username, password: password },
-        { responseType: 'text' }
+        { responseType: 'text', headers: this.httpOptions.headers }
       )
       .pipe(
         tap((response) => {
@@ -35,7 +43,7 @@ export class UsersService {
       .post(
         `${this.url}/login`,
         { username: username, password: password },
-        { responseType: 'text' }
+        { responseType: 'text', headers: this.httpOptions.headers }
       )
       .pipe(
         tap((response) => {

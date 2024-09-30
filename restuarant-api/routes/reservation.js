@@ -213,18 +213,63 @@ router.delete("/deleteReservation/:id", async function (req, res, next) {
   }
 });
 
-// the endpoint for getting reservations by date range
+// the endpoint for getting reservations by guest name or phone or email or start date or end date
+/**
+ * @swagger
+ * /reservation/getReservationByGuestNameStartDateEndDate/{guestName}/{phone}/{email}/{startDate}/{endDate}:
+ *   get:
+ *     summary: Get reservations by guest name or phone or email or start date or end date
+ *     parameters:
+ *       - in: path
+ *         name: guestName
+ *         required: false
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: phone
+ *         required: false
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: email
+ *         required: false
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: startDate
+ *         required: false
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: endDate
+ *         required: false
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: A successful response
+ *       500:
+ *         description: An error occurred
+ */
+
 router.get(
-  "/getReservationByStartDateEndDate/:startDate/:endDate",
+  "/getReservationByGuestNameStartDateEndDate/:guestName/:phone/:email/:startDate/:endDate",
   async function (req, res, next) {
     try {
       let pool = await sql.connect(config);
       let result = await pool
         .request()
+        .input("guestName", sql.VarChar, req.params.guestName)
+        .input("phone", sql.VarChar, req.params.phone)
+        .input("email", sql.VarChar, req.params.email)
         .input("startDate", sql.Date, req.params.startDate)
         .input("endDate", sql.Date, req.params.endDate)
         .query(
-          "SELECT * FROM tbl_reservation_table WHERE reserve_date BETWEEN @startDate AND @endDate"
+          "SELECT * FROM tbl_reservation_table " +
+            "WHERE name LIKE '%@guestName%' OR " +
+            "(reserve_date BETWEEN @startDate AND @endDate) OR " +
+            "tel LIKE '%@phone%' OR " +
+            "email LIKE '%@email%'"
         );
       return res.status(200).json({ data: result.recordset });
     } catch (err) {
@@ -233,20 +278,5 @@ router.get(
     }
   }
 );
-
-// the endpoint for getting reservations by phone number
-router.get("/getReservationByPhone/:phone", async function (req, res, next) {
-  try {
-    let pool = await sql.connect(config);
-    let result = await pool
-      .request()
-      .input("phone", sql.VarChar, req.params.phone)
-      .query("SELECT * FROM tbl_reservation_table WHERE tel = @phone");
-    return res.status(200).json({ data: result.recordset });
-  } catch (err) {
-    console.log(err);
-    return res.status(500).json({ data: err });
-  }
-});
 
 module.exports = router;

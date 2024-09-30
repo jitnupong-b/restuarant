@@ -3,6 +3,8 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+const basicAuth = require("express-basic-auth");
+const cors = require("cors");
 
 // swagger setup
 var swaggerJsdoc = require("swagger-jsdoc");
@@ -25,17 +27,28 @@ app.set("view engine", "pug");
 // Add headers
 app.use(function (req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
-  );
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "X-Requested-With,content-type"
-  );
-  res.setHeader("Access-Control-Allow-Credentials", true);
+  res.setHeader("Access-Control-Allow-Methods", "*");
+  res.setHeader("Access-Control-Allow-Headers", "*");
   next();
 });
+
+app.use(cors("{origin: true}"));
+
+app.use(
+  basicAuth({
+    users: { admin: "adminadmin;" },
+    challenge: true,
+    unauthorizedResponse: getUnauthorizedResponse,
+  })
+);
+
+function getUnauthorizedResponse(req) {
+  return req.auth
+    ? "Credentials " + req.auth.user + ":" + req.auth.password + " rejected"
+    : "No credentials provided";
+}
+
+app.options("*", cors({ origin: true }));
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
