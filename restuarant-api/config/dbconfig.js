@@ -1,7 +1,7 @@
 const config = {
     user: 'restuarant',
     password: 'Cssrc05',
-    server: '10.64.188.190',
+    server: '10.64.188.111',
     database: 'restaurant',
     options: {        
         encrypt: false,
