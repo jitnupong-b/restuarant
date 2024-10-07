@@ -10,10 +10,12 @@ router.get("/", async function (req, res, next) {
     await sql.connect(config);
     console.log("connected");
     const result =
-      await sql.query`SELECT * from tbl_admin`;
+      await sql.query `SELECT * from tbl_admin`;
     console.log("Query result:", result);
     await sql.close();
-    return res.status(200).json({ data: result });
+    return res.status(200).json({
+      data: result
+    });
   } catch (err) {
     console.error("Database connection error:", err);
     console.error("Error details:", JSON.stringify(err, null, 2));
@@ -22,9 +24,13 @@ router.get("/", async function (req, res, next) {
 
 router.post("/login-fixed", function (req, res, next) {
   if (req.body.username === "test@x.com" && req.body.password === "1234") {
-    return res.status(200).json({ data: "login success" });
+    return res.status(200).json({
+      data: "login success"
+    });
   } else {
-    return res.status(200).json({ data: "login failed" });
+    return res.status(200).json({
+      data: "login failed"
+    });
   }
 });
 
@@ -38,10 +44,14 @@ router.post("/login", async function (req, res, next) {
       .query(
         "SELECT * FROM tbl_admin WHERE email = @username AND password = @password"
       );
-    return res.status(200).json({ data: result });
+    return res.status(200).json({
+      data: result
+    });
   } catch (err) {
     console.log(err);
-    return res.status(500).json({ data: err });
+    return res.status(500).json({
+      data: err
+    });
   }
 });
 

@@ -112,6 +112,10 @@ export class ManageComponent implements OnInit {
   }
 
   searchSubmit() {
+    var name: string = '';
+    var startDate: string = '';
+    var endDate: string = '';
+
     if (
       this.searchFormGroup.value['searchStartDate'] !== '' &&
       this.searchFormGroup.value['searchEndDate'] === ''
@@ -122,10 +126,20 @@ export class ManageComponent implements OnInit {
       });
       this.editFormGroup.reset();
       return;
+    } else if (this.searchFormGroup.value['searchStartDate'] === '') {
+      startDate = '';
+      endDate = '';
     }
+
+    if (this.searchFormGroup.value['searchName'] === '') {
+      name = '-';
+    } else {
+      name = this.searchFormGroup.value['searchName'];
+    }
+
     this.reservationService
       .searchReservation(
-        this.searchFormGroup.value['searchName'],
+        name,
         this.searchFormGroup.value['searchStartDate'],
         this.searchFormGroup.value['searchEndDate']
       )
@@ -133,5 +147,10 @@ export class ManageComponent implements OnInit {
         this.reservatinList = data.data;
         this.checkSearchInput = true;
       });
+  }
+  clearSearch() {
+    this.getAllReservations();
+    this.checkSearchInput = false;
+    this.searchFormGroup.reset();
   }
 }
