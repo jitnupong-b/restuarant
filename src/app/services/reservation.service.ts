@@ -10,12 +10,10 @@ export class ReservationService {
   private url = 'http://localhost:3000/reservation';
 
   private httpOptions = {
-    headers: new HttpHeaders(
-      {
-        'Content-Type': 'application/json',
-        Authorization: 'Basic ' + btoa('admin:adminadmin;'),
-      }
-    )
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: 'Basic ' + btoa('admin:adminadmin;'),
+    }),
   };
 
   constructor(private http: HttpClient) {}
@@ -41,7 +39,7 @@ export class ReservationService {
           guests: guests,
           specialRequests: specialRequests,
         },
-        { responseType: 'text', headers: this.httpOptions.headers },
+        { responseType: 'text', headers: this.httpOptions.headers }
       )
       .pipe(
         tap((response) => {
@@ -78,34 +76,49 @@ export class ReservationService {
   }
 
   getAllReservations(): Observable<any> {
-    return this.http.get(`${this.url}/getAllReservation`, this.httpOptions).pipe(
-      tap((response) => {
-        console.log(response);
-      })
-    );
+    return this.http
+      .get(`${this.url}/getAllReservation`, this.httpOptions)
+      .pipe(
+        tap((response) => {
+          console.log(response);
+        })
+      );
   }
 
   getReservation(id: string): Observable<any> {
-    return this.http.get(`${this.url}/getReservation/${id}`, this.httpOptions).pipe(
-      tap((response) => {
-        console.log(response);
-      })
-    );
+    return this.http
+      .get(`${this.url}/getReservation/${id}`, this.httpOptions)
+      .pipe(
+        tap((response) => {
+          console.log(response);
+        })
+      );
   }
 
   deleteReservation(id: string): Observable<any> {
-    return this.http.delete(`${this.url}/deleteReservation/${id}`, this.httpOptions).pipe(
-      tap((response) => {
-        console.log(response);
-      })
-    );
+    return this.http
+      .delete(`${this.url}/deleteReservation/${id}`, this.httpOptions)
+      .pipe(
+        tap((response) => {
+          console.log(response);
+        })
+      );
   }
 
-  searchReservation(name: string, startDate: string, endDate: string): Observable<any> {
-    return this.http.get(`${this.url}/getReservationByGuestNameStartDateEndDate/${name}/${startDate}/${endDate}`, this.httpOptions).pipe(
-      tap((response) => {
-        console.log(response);
-      })
-    );
+  searchReservation(
+    name: string,
+    startDate: string,
+    endDate: string
+  ): Observable<any> {
+    return this.http
+      .get(
+        `${this.url}/getReservationByGuestNameStartDateEndDate/${name}/${name}/${name}/${startDate}/${endDate}`,
+        this.httpOptions
+      )
+      .pipe(
+        tap((response) => {
+          console.log(response);
+        })
+      );
   }
 }

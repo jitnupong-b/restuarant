@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ReservationService } from '../../services/reservation.service';
 import Swal from 'sweetalert2';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 @Component({
   selector: 'app-manage',
   templateUrl: './manage.component.html',
@@ -112,5 +111,27 @@ export class ManageComponent implements OnInit {
     }
   }
 
-  searchSubmit() {}
+  searchSubmit() {
+    if (
+      this.searchFormGroup.value['searchStartDate'] !== '' &&
+      this.searchFormGroup.value['searchEndDate'] === ''
+    ) {
+      Swal.fire({
+        icon: 'error',
+        title: 'กรุณากรอกวันที่สิ้นสุด',
+      });
+      this.editFormGroup.reset();
+      return;
+    }
+    this.reservationService
+      .searchReservation(
+        this.searchFormGroup.value['searchName'],
+        this.searchFormGroup.value['searchStartDate'],
+        this.searchFormGroup.value['searchEndDate']
+      )
+      .subscribe((data: any) => {
+        this.reservatinList = data.data;
+        this.checkSearchInput = true;
+      });
+  }
 }

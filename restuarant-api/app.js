@@ -10,7 +10,6 @@ const cors = require("cors");
 var swaggerJsdoc = require("swagger-jsdoc");
 var swaggerUi = require("swagger-ui-express");
 const swaggerOptions = require("./config/swagger-config");
-
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
 
 // regist the routes
@@ -50,6 +49,7 @@ function getUnauthorizedResponse(req) {
 
 app.options("*", cors({ origin: true }));
 
+// swagger setup
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // built-in middleware

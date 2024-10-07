@@ -63,10 +63,14 @@ router.post("/addReservation", async function (req, res, next) {
       .query(
         "INSERT INTO tbl_reservation_table (name, email, tel, pax, remarks, reserve_date, reserve_time) VALUES (@guestName, @guestEmail, @guestTel, @guestPax, @guestRemarks, @guestDate, CAST(@guestTime AS TIME))"
       );
-    return res.status(200).json({ data: result });
+    return res.status(200).json({
+      data: result
+    });
   } catch (err) {
     console.log(err);
-    return res.status(500).json({ data: err });
+    return res.status(500).json({
+      data: err
+    });
   }
 });
 
@@ -86,10 +90,14 @@ router.get("/getAllReservation", async function (req, res, next) {
     let result = await pool
       .request()
       .query("SELECT * FROM tbl_reservation_table");
-    return res.status(200).json({ data: result.recordset });
+    return res.status(200).json({
+      data: result.recordset
+    });
   } catch (err) {
     console.log(err);
-    return res.status(500).json({ data: err });
+    return res.status(500).json({
+      data: err
+    });
   }
 });
 
@@ -116,10 +124,14 @@ router.get("/getReservation/:id", async function (req, res, next) {
       .request()
       .input("id", sql.Int, req.params.id)
       .query("SELECT * FROM tbl_reservation_table WHERE id = @id");
-    return res.status(200).json({ data: result.recordset });
+    return res.status(200).json({
+      data: result.recordset
+    });
   } catch (err) {
     console.log(err);
-    return res.status(500).json({ data: err });
+    return res.status(500).json({
+      data: err
+    });
   }
 });
 
@@ -176,10 +188,14 @@ router.put("/updateReservation/:id", async function (req, res, next) {
       .query(
         "UPDATE tbl_reservation_table SET name = @guestName, email = @guestEmail, tel = @guestTel, pax = @guestPax, remarks = @guestRemarks, reserve_date = @guestDate, reserve_time = CAST(@guestTime AS TIME) WHERE id = @id"
       );
-    return res.status(200).json({ data: result });
+    return res.status(200).json({
+      data: result
+    });
   } catch (err) {
     console.log(err);
-    return res.status(500).json({ data: err });
+    return res.status(500).json({
+      data: err
+    });
   }
 });
 
@@ -206,10 +222,14 @@ router.delete("/deleteReservation/:id", async function (req, res, next) {
       .request()
       .input("id", sql.Int, req.params.id)
       .query("DELETE FROM tbl_reservation_table WHERE id = @id");
-    return res.status(200).json({ data: result });
+    return res.status(200).json({
+      data: result
+    });
   } catch (err) {
     console.log(err);
-    return res.status(500).json({ data: err });
+    return res.status(500).json({
+      data: err
+    });
   }
 });
 
@@ -266,15 +286,19 @@ router.get(
         .input("endDate", sql.Date, req.params.endDate)
         .query(
           "SELECT * FROM tbl_reservation_table " +
-            "WHERE name LIKE '%@guestName%' OR " +
-            "(reserve_date BETWEEN @startDate AND @endDate) OR " +
-            "tel LIKE '%@phone%' OR " +
-            "email LIKE '%@email%'"
+          "WHERE name LIKE '%@guestName%' OR " +
+          "(reserve_date BETWEEN @startDate AND @endDate) OR " +
+          "tel LIKE '%@phone%' OR " +
+          "email LIKE '%@email%'"
         );
-      return res.status(200).json({ data: result.recordset });
+      return res.status(200).json({
+        data: result.recordset
+      });
     } catch (err) {
       console.log(err);
-      return res.status(500).json({ data: err });
+      return res.status(500).json({
+        data: err
+      });
     }
   }
 );
