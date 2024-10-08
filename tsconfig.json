@@ -5,7 +5,11 @@
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
+<<<<<<< HEAD
     "strictNullChecks":false,
+=======
+    "strictNullChecks": false,
+>>>>>>> 4a06c7c3fbcafd7ab138a03f1135b751d22df535
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,

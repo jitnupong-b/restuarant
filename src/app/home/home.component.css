@@ -1,0 +1,8 @@
+.large-text {
+    font-size: 4rem; /* ขนาดฟอนต์ที่คุณต้องการ */
+    font-weight: bold; /* เพิ่มความหนาของฟอนต์ */
+  }
+  img {
+    width: 100px;
+    height: auto;
+  }

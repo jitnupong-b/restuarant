@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+<<<<<<< HEAD
 import Swal from 'sweetalert2';
 import { ReservationService } from '../services/reservation.service';
 import { Router } from '@angular/router';
+=======
+>>>>>>> 4a06c7c3fbcafd7ab138a03f1135b751d22df535
 
 @Component({
   selector: 'app-reservation',
@@ -12,11 +15,15 @@ import { Router } from '@angular/router';
 export class ReservationComponent implements OnInit {
   reservationForm!: FormGroup;
 
+<<<<<<< HEAD
   constructor(
     private fb: FormBuilder,
     private reservationService: ReservationService,
     private router: Router
   ) {}
+=======
+  constructor(private fb: FormBuilder) {}
+>>>>>>> 4a06c7c3fbcafd7ab138a03f1135b751d22df535
 
   ngOnInit(): void {
     this.reservationForm = this.fb.group({
@@ -31,6 +38,7 @@ export class ReservationComponent implements OnInit {
   }
 
   onSubmit() {
+<<<<<<< HEAD
 
     if (this.reservationForm.valid) {
       Swal.fire({
@@ -61,6 +69,13 @@ export class ReservationComponent implements OnInit {
         }
       });
     } else {
+=======
+    if (this.reservationForm.valid) {
+      console.log(this.reservationForm.value);
+      // Here you would typically send the form data to a server
+    } else {
+      // Mark all fields as touched to trigger validation messages
+>>>>>>> 4a06c7c3fbcafd7ab138a03f1135b751d22df535
       Object.keys(this.reservationForm.controls).forEach((key) => {
         const control = this.reservationForm.get(key);
         if (control) {
@@ -69,4 +84,8 @@ export class ReservationComponent implements OnInit {
       });
     }
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 4a06c7c3fbcafd7ab138a03f1135b751d22df535
