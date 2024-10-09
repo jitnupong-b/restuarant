@@ -47,16 +47,12 @@
           <button
             class="btn btn-secondary mt-2"
             type="submit"
-            [disabled]="
-              searchFormGroup.value['searchName'] != '' &&
-              searchFormGroup.value['searchStartDate'] != '' &&
-              searchFormGroup.value['searchEndDate'] != ''
-            "
           >
-          &nbsp;
-          <button
-          class="btn btn-light" (click)="clearSearch()"><i class="bi bi-x"></i> รีเซ็ต</button>
             <i class="bi bi-search"></i> ค้นหา
+          </button>
+          &nbsp;
+          <button class="btn btn-light mt-2" (click)="clearSearch()">
+            <i class="bi bi-x"></i> รีเซ็ต
           </button>
         </form>
       </div>

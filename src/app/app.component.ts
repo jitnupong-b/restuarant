@@ -19,8 +19,9 @@ export class AppComponent {
   }
 
   logout() {
-    localStorage.setItem('username', '');
+    this.usersService.logout();
     this.logined = false;
+    this.router.navigate(['/']);
   }
 
 }

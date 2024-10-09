@@ -19,6 +19,9 @@ const upload = multer({
 });
 
 /* GET menu listing. */
+/**
+ * 
+ */
 router.get("/getAllMenu", async function (req, res, next) {
   try {
     await sql.connect(config);
@@ -33,7 +36,7 @@ router.get("/getAllMenu", async function (req, res, next) {
   }
 });
 
-router.get("/getMenu/:id", async function (req, res, next) {
+router.get("/getMenu/:id", upload.single('image'), async function (req, res, next) {
   try {
     let pool = await sql.connect(config);
     let result = await pool
@@ -62,7 +65,7 @@ router.post("/addMenu", upload.single('image'), async function (req, res, next) 
       .input("image", sql.VarChar, req.file.filename)
       .input("imagePath", sql.VarChar, req.file.path)
       .query(
-        "INSERT INTO tbl_menu (name, price, description, menu_image, menu_image_path) VALUES (@name, @price, @description, @image, @imagePath)"
+        "INSERT INTO tbl_menu (name, price, description, menu_image, menu_image_path, menu_status) VALUES (@name, @price, @description, @image, @imagePath, 1)"
       );
     return res.status(200).json({
       data: result
@@ -75,17 +78,43 @@ router.post("/addMenu", upload.single('image'), async function (req, res, next) 
   }
 });
 
+// the endpoint for updating a reservation
 router.put("/updateMenu/:id", async function (req, res, next) {
   try {
     let pool = await sql.connect(config);
     let result = await pool
       .request()
+      .input("id", sql.Int, req.params.id)
       .input("name", sql.VarChar, req.body.name)
       .input("price", sql.Decimal, req.body.price)
       .input("description", sql.VarChar, req.body.description)
-      .input("id", sql.Int, req.params.id)
+      .input("image", sql.VarChar, req.file.filename)
+      .input("imagePath", sql.VarChar, req.file.path)
+      .input("status", sql.Bit, req.body.status)
       .query(
-        "UPDATE tbl_menu SET name = @name, price = @price, description = @description WHERE id = @id"
+        "UPDATE tbl_menu SET name = @name, price = @price, description = @description, menu_image = @image, menu_impage_path = @impagePage, menu_status = @status WHERE id = @id"
+      );
+    return res.status(200).json({
+      data: result
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      data: err
+    });
+  }
+});
+
+// update menu status
+router.put("/updateMenuStatus/:id", async function (req, res, next) {
+  try {
+    let pool = await sql.connect(config);
+    let result = await pool
+      .request()
+      .input("id", sql.Int, req.params.id)
+      .input("status", sql.Bit, req.body.status)
+      .query(
+        "UPDATE tbl_menu SET menu_status = @status WHERE id = @id"
       );
     return res.status(200).json({
       data: result

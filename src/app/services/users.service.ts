@@ -10,12 +10,10 @@ export class UsersService {
   private url = 'http://localhost:3000/users';
 
   private httpOptions = {
-    headers: new HttpHeaders(
-      {
-        'Content-Type': 'application/json',
-        Authorization: 'Basic ' + btoa('admin:adminadmin;'),
-      }
-    )
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: 'Basic ' + btoa('admin:adminadmin;'),
+    }),
   };
 
   constructor(private http: HttpClient) {}
@@ -57,5 +55,25 @@ export class UsersService {
           }
         })
       );
+  }
+
+  logout() {
+    localStorage.removeItem('username');
+  }
+
+  isUserLoggedIn() {
+    if (
+      localStorage.getItem('username') !== '' &&
+      localStorage.getItem('username') !== null
+    ) {
+      return true;
+    } else if (
+      localStorage.getItem('username') === '' ||
+      localStorage.getItem('username') === null
+    ) {
+      return false;
+    } else {
+      return false;
+    }
   }
 }

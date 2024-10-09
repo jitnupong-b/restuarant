@@ -13,6 +13,7 @@ import { ManageComponent } from './admin/manage/manage.component';
 import { ReservationComponent } from './reservation/reservation.component';
 import { UsersService } from './services/users.service';
 import { HttpClientModule } from '@angular/common/http';
+import { ManageMenuComponent } from './admin/menu/menu.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { HttpClientModule } from '@angular/common/http';
     ContactUsComponent,
     LoginComponent,
     ManageComponent,
+    ManageMenuComponent,
     ReservationComponent
   ],
   imports: [

@@ -279,6 +279,19 @@ router.delete("/deleteReservation/:id", async function (req, res, next) {
 router.get(
   "/getReservationByGuestNameStartDateEndDate/:guestName/:phone/:email/:startDate/:endDate",
   async function (req, res, next) {
+    var startDate = '';
+    var endDate = '';
+
+    if (req.params.startDate === '-') 
+      startDate = '2024-01-01';
+    else
+      startDate = req.params.startDate;
+
+    if (req.params.endDate === '-')
+      endDate = '2024-12-31';
+    else
+      endDate = req.params.endDate;
+
     try {
       let pool = await sql.connect(config);
       let result = await pool
@@ -286,14 +299,14 @@ router.get(
         .input("guestName", sql.VarChar, req.params.guestName)
         .input("phone", sql.VarChar, req.params.phone)
         .input("email", sql.VarChar, req.params.email)
-        .input("startDate", sql.Date, req.params.startDate)
-        .input("endDate", sql.Date, req.params.endDate)
+        .input("startDate", sql.Date, startDate)
+        .input("endDate", sql.Date, endDate)
         .query(
           "SELECT * FROM tbl_reservation_table " +
-          "WHERE name LIKE '%@guestName%' OR " +
-          "(reserve_date BETWEEN @startDate AND @endDate) OR " +
+          "WHERE (name LIKE '%@guestName%' OR " +
           "tel LIKE '%@phone%' OR " +
-          "email LIKE '%@email%'"
+          "email LIKE '%@email%') AND " +
+          "(reserve_date BETWEEN @startDate AND @endDate)"
         );
       return res.status(200).json({
         data: result.recordset
