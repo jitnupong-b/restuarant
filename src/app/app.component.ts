@@ -14,7 +14,7 @@ export class AppComponent {
   constructor(private usersService: UsersService, private router: Router) {
     if (localStorage.getItem('username') !== '' && localStorage.getItem('username') !== null) {
       this.logined = true;
-      this.router.navigate(['/admin/manage']);
+      //this.router.navigate(['/admin/manage']);
     }
   }
 

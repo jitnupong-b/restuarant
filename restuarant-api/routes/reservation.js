@@ -125,7 +125,8 @@ router.get("/getReservation/:id", async function (req, res, next) {
       .input("id", sql.Int, req.params.id)
       .query(
         "SELECT id, name, email, tel, pax, remarks, " +
-        "FORMAT(reservation_date, 'YYYY-MM-DD'), FORMAT(reservation_timne, 'HH:MM:SS') " +
+        "FORMAT(reserve_date, 'yyyy-MM-dd') as reserve_date, " + 
+        "FORMAT(reserve_time, 'hh\:mm\:ss', 'en-US') as reserve_time " +
         "FROM tbl_reservation_table WHERE id = @id"
       );
     return res.status(200).json({
