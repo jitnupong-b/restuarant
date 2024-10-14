@@ -62,16 +62,12 @@ export class UsersService {
   }
 
   isUserLoggedIn() {
+    console.log(localStorage.getItem('username'));
     if (
       localStorage.getItem('username') !== '' &&
       localStorage.getItem('username') !== null
     ) {
       return true;
-    } else if (
-      localStorage.getItem('username') === '' ||
-      localStorage.getItem('username') === null
-    ) {
-      return false;
     } else {
       return false;
     }

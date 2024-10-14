@@ -7,12 +7,24 @@ const sql = require("mssql");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'menu-images/')
+    console.log('Destination called');
+    cb(null, '../resources')
   },
   filename: function (req, file, cb) {
+    console.log('Filename called');
     cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
   }
 });
+
+/*const upload = multer({
+  storage: storage,
+  fileFilter: function (req, file, cb) {
+    console.log(req);
+    console.log('File filter called');
+    console.log('File:', file);
+    cb(null, true);
+  }
+});*/
 
 const upload = multer({
   storage: storage
@@ -36,7 +48,7 @@ router.get("/getAllMenu", async function (req, res, next) {
   }
 });
 
-router.get("/getMenu/:id", upload.single('image'), async function (req, res, next) {
+router.get("/getMenu/:id", async function (req, res, next) {
   try {
     let pool = await sql.connect(config);
     let result = await pool
@@ -54,18 +66,19 @@ router.get("/getMenu/:id", upload.single('image'), async function (req, res, nex
   }
 });
 
-router.post("/addMenu", upload.single('image'), async function (req, res, next) {
+router.post("/addMenu", upload.single('menuImg'), async function (req, res, next) {
+  console.log(req.body);
+  console.log(req.file);
   try {
     let pool = await sql.connect(config);
     let result = await pool
       .request()
-      .input("name", sql.VarChar, req.body.name)
-      .input("price", sql.Decimal, req.body.price)
-      .input("description", sql.VarChar, req.body.description)
-      .input("image", sql.VarChar, req.file.filename)
-      .input("imagePath", sql.VarChar, req.file.path)
+      .input("name", sql.VarChar, req.body.menuName)
+      .input("price", sql.Decimal, req.body.menuPrice)
+      .input("description", sql.VarChar, req.body.menuDesc)
+      .input("image", sql.VarChar, req.file.menuImg)
       .query(
-        "INSERT INTO tbl_menu (name, price, description, menu_image, menu_image_path, menu_status) VALUES (@name, @price, @description, @image, @imagePath, 1)"
+        "INSERT INTO tbl_menu (name, price, description, menu_image, menu_image_path, menu_status) VALUES (@name, @price, @description, @image, 1)"
       );
     return res.status(200).json({
       data: result
@@ -79,7 +92,7 @@ router.post("/addMenu", upload.single('image'), async function (req, res, next) 
 });
 
 // the endpoint for updating a reservation
-router.put("/updateMenu/:id", async function (req, res, next) {
+router.put("/updateMenu/:id", upload.single('image'), async function (req, res, next) {
   try {
     let pool = await sql.connect(config);
     let result = await pool
@@ -116,6 +129,7 @@ router.put("/updateMenuStatus/:id", async function (req, res, next) {
       .query(
         "UPDATE tbl_menu SET menu_status = @status WHERE id = @id"
       );
+    pool.close();
     return res.status(200).json({
       data: result
     });

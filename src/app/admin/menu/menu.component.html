@@ -65,7 +65,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="menuModal">
-          <i class="bi bi-table"></i> แก้ไขข้อมูลการจอง
+          <i class="bi bi-table"></i> แก้ไขข้อมูลเมนูอาหาร
         </h1>
         <button
           type="button"
@@ -74,13 +74,14 @@
           aria-label="Close"
         ></button>
       </div>
-      <div class="modal-body">
-        <form
-          [formGroup]="menuForm"
-          (ngSubmit)="onSubmiMenu()"
-          class="needs-validation"
-          novalidate
-        >
+      <form
+        [formGroup]="menuForm"
+        (ngSubmit)="onSubmitMenu()"
+        class="needs-validation"
+        novalidate
+        enctype="multipart/form-data"
+      >
+        <div class="modal-body">
           <div class="mb-3">
             <label for="menuName" class="form-label">ชื่อเมนูอาหาร</label>
             <input
@@ -90,13 +91,15 @@
               class="form-control"
               [ngClass]="{
                 'is-invalid':
-                  menuForm.get('menuName').invalid && menuForm.get('menuName').touched
+                  menuForm.get('menuName').invalid &&
+                  menuForm.get('menuName').touched
               }"
             />
             <div
               class="invalid-feedback"
               *ngIf="
-                menuForm.get('name').invalid && menuForm.get('name').touched
+                menuForm.get('menuName').invalid &&
+                menuForm.get('menuName').touched
               "
             >
               กรุณากรอกข้อมูลชื่อเมนูอาหาร
@@ -104,140 +107,74 @@
           </div>
 
           <div class="mb-3">
-            <label for="email" class="form-label"
-              >อีเมล์สำหรับยืนยันการจอง</label
-            >
+            <label for="menuPrice" class="form-label">ราคา</label>
             <input
-              id="email"
-              type="email"
-              formControlName="email"
-              class="form-control"
-              [ngClass]="{
-                'is-invalid':
-                  menuForm.get('email').invalid && menuForm.get('email').touched
-              }"
-            />
-            <div
-              class="invalid-feedback"
-              *ngIf="
-                menuForm.get('email').invalid && menuForm.get('email').touched
-              "
-            >
-              กรุณากรอกข้อมูลอีเมล์ลูกค้า
-            </div>
-          </div>
-
-          <div class="mb-3">
-            <label for="phone" class="form-label">หมายเลขเบอร์โทรศัพท์</label>
-            <input
-              id="phone"
-              type="tel"
-              formControlName="phone"
-              class="form-control"
-              [ngClass]="{
-                'is-invalid':
-                  menuForm.get('phone').invalid && menuForm.get('phone').touched
-              }"
-            />
-            <div
-              class="invalid-feedback"
-              *ngIf="
-                menuForm.get('phone').invalid && menuForm.get('phone').touched
-              "
-            >
-              กรุณากรอกข้อมูลเบอร์โทรศัพท์
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-6 mb-3">
-              <label for="date" class="form-label">วันที่จอง</label>
-              <input
-                id="date"
-                type="date"
-                formControlName="date"
-                class="form-control"
-                [ngClass]="{
-                  'is-invalid':
-                    menuForm.get('date').invalid && menuForm.get('date').touched
-                }"
-              />
-              <div
-                class="invalid-feedback"
-                *ngIf="
-                  menuForm.get('date').invalid && menuForm.get('date').touched
-                "
-              >
-                กรุณากำหนดวันที่ต้องการจอง
-              </div>
-            </div>
-
-            <div class="col-md-6 mb-3">
-              <label for="time" class="form-label">เวลา</label>
-              <input
-                id="time"
-                type="time"
-                formControlName="time"
-                class="form-control"
-                [ngClass]="{
-                  'is-invalid':
-                    menuForm.get('time').invalid && menuForm.get('time').touched
-                }"
-              />
-              <div
-                class="invalid-feedback"
-                *ngIf="
-                  menuForm.get('time').invalid && menuForm.get('time').touched
-                "
-              >
-                กรุณากำหนดเวลาที่ต้องการจอง
-              </div>
-            </div>
-          </div>
-
-          <div class="mb-3">
-            <label for="guests" class="form-label">จำนวนแขก</label>
-            <input
-              id="guests"
+              id="menuPrice"
               type="number"
-              formControlName="guests"
+              formControlName="menuPrice"
               class="form-control"
-              min="1"
               [ngClass]="{
                 'is-invalid':
-                  menuForm.get('guests').invalid &&
-                  menuForm.get('guests').touched
+                  menuForm.get('menuPrice').invalid &&
+                  menuForm.get('menuPrice').touched
               }"
             />
             <div
               class="invalid-feedback"
               *ngIf="
-                menuForm.get('guests').invalid && menuForm.get('guests').touched
+                menuForm.get('menuPrice').invalid &&
+                menuForm.get('menuPrice').touched
               "
             >
-              กรุณากรอกข้อมูลจำนวนลูกค้า (ไม่น้อยกว่า 1 ท่าน)
+              กรุณากำหนดราคาเมนู
             </div>
           </div>
 
           <div class="mb-3">
-            <label for="specialRequests" class="form-label"
-              >ความต้องการเฉพาะ</label
-            >
+            <label for="phone" class="form-label">รายละเอียดของเมนู</label>
             <textarea
-              id="specialRequests"
-              formControlName="specialRequests"
+              name="menuDesc"
+              id="menuDesc"
+              formControlName="menuDesc"
               class="form-control"
-              rows="3"
+              [ngClass]="{
+                'is-invalid':
+                  menuForm.get('menuDesc').invalid &&
+                  menuForm.get('menuDesc').touched
+              }"
             ></textarea>
+
+            <div
+              class="invalid-feedback"
+              *ngIf="
+                menuForm.get('menuDesc').invalid &&
+                menuForm.get('menuDesc').touched
+              "
+            >
+              กรุณากำหนดรายละเอียดของเมนู
+            </div>
           </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          ยกเลิก
-        </button>
-        <button type="button" class="btn btn-primary">บันทึก</button>
-      </div>
+          <div class="mb-3">
+            <label for="menuImg" class="form-label">ภาพประกอบ</label>
+            <input
+              type="file"
+              name="menuImg"
+              id="menuImg"
+              class="form-control"
+            />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            ยกเลิก
+          </button>
+          <button type="submit" class="btn btn-primary">บันทึก</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>

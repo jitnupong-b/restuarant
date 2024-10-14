@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { UsersService } from '../../services/users.service';
 import { MenuService } from '../../services/menu.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-menu',
@@ -12,6 +12,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 export class ManageMenuComponent {
   menuList: [];
   menuForm: FormGroup;
+  isUpdate = false;
 
   constructor(
     private router: Router,
@@ -23,10 +24,9 @@ export class ManageMenuComponent {
   ngOnInit() {
     this.getAllMenu();
     this.menuForm = this.fb.group({
-      name: [''],
-      description: [''],
-      price: [''],
-      category: [''],
+      menuName: ['', Validators.required],
+      menuDesc: ['', Validators.required],
+      menuPrice: ['', Validators.required],
     });
   }
 
@@ -37,7 +37,34 @@ export class ManageMenuComponent {
     });
   }
 
-  onSubmiMenu() {
-
+  onSubmitMenu() {
+    if (this.menuForm.invalid) {
+      console.log('xx');
+      Object.keys(this.menuForm.controls).forEach((key) => {
+        const control = this.menuForm.get(key);
+        if (control) {
+          control.markAsTouched();
+        }
+      });
+    } else {
+      if (this.isUpdate == false) {
+        this.menuService.addMenu(this.menuForm.value).subscribe((data: any) => {
+          if (data.status === 200) {
+            this.getAllMenu();
+            this.menuForm.reset();
+          }
+        });
+      } else {
+        this.menuService
+          .updateMenu(this.menuForm.value)
+          .subscribe((data: any) => {
+            if (data.status === 200) {
+              this.getAllMenu();
+              this.menuForm.reset();
+              this.isUpdate = false;
+            }
+          });
+      }
+    }
   }
 }
