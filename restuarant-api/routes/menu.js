@@ -8,7 +8,7 @@ const sql = require("mssql");
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     console.log('Destination called');
-    cb(null, '../resources')
+    cb(null, '/resources')
   },
   filename: function (req, file, cb) {
     console.log('Filename called');
@@ -16,7 +16,7 @@ const storage = multer.diskStorage({
   }
 });
 
-/*const upload = multer({
+const upload = multer({
   storage: storage,
   fileFilter: function (req, file, cb) {
     console.log(req);
@@ -24,10 +24,45 @@ const storage = multer.diskStorage({
     console.log('File:', file);
     cb(null, true);
   }
-});*/
+});
 
-const upload = multer({
-  storage: storage
+router.post("/addMenu", upload.single('menuImg'), async function (req, res, next) {
+  console.log(req.body);
+  console.log(req.files);
+
+  try {
+
+    let pool = await sql.connect(config);
+    let result = await pool
+      .request()
+      .input("name", sql.VarChar, req.body.menuName)
+      .input("price", sql.Decimal, req.body.menuPrice)
+      .input("description", sql.VarChar, req.body.menuDesc)
+      //.input("image", sql.VarChar, req.file.menuImg)
+      .query(
+        "INSERT INTO tbl_menu (name, price, description) VALUES (@name, @price, @description)"
+      );
+    return res.status(200).json({
+      data: result
+    });
+  } catch (err) {
+    if (err instanceof multer.MulterError) {
+      console.error('Multer error:', err);
+      return res.status(500).json({
+        error: `Multer error: ${err.message}`
+      });
+    } else if (err) {
+      console.error('Unknown error:', err);
+      return res.status(500).json({
+        error: `Unknown error: ${err.message}`
+      });
+    }
+
+    console.log(err);
+    return res.status(500).json({
+      data: err
+    });
+  }
 });
 
 /* GET menu listing. */
@@ -55,31 +90,6 @@ router.get("/getMenu/:id", async function (req, res, next) {
       .request()
       .input("id", sql.Int, req.params.id)
       .query("SELECT * FROM tbl_menu WHERE id = @id");
-    return res.status(200).json({
-      data: result
-    });
-  } catch (err) {
-    console.log(err);
-    return res.status(500).json({
-      data: err
-    });
-  }
-});
-
-router.post("/addMenu", upload.single('menuImg'), async function (req, res, next) {
-  console.log(req.body);
-  console.log(req.file);
-  try {
-    let pool = await sql.connect(config);
-    let result = await pool
-      .request()
-      .input("name", sql.VarChar, req.body.menuName)
-      .input("price", sql.Decimal, req.body.menuPrice)
-      .input("description", sql.VarChar, req.body.menuDesc)
-      .input("image", sql.VarChar, req.file.menuImg)
-      .query(
-        "INSERT INTO tbl_menu (name, price, description, menu_image, menu_image_path, menu_status) VALUES (@name, @price, @description, @image, 1)"
-      );
     return res.status(200).json({
       data: result
     });

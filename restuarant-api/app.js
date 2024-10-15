@@ -27,6 +27,8 @@ app.set("view engine", "pug");
 
 // Add headers
 app.use(function (req, res, next) {
+  console.log('Incoming request:', req.method, req.path);
+  console.log('Headers:', req.headers);
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "*");
   res.setHeader("Access-Control-Allow-Headers", "*");
